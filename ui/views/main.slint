@@ -1,0 +1,45 @@
+import {Hello} from "../components/index.slint";
+import { SButton } from "../modules/surrealism-ui/index.slint";
+import { HorizontalBox, VerticalBox, LineEdit, Button } from "std-widgets.slint";
+import { RoomsFileExplorer } from "../components/rooms-file-explorer.slint";
+
+export component MainView {
+    y: 0;
+    preferred-height: 100%;
+    preferred-width: 100%;
+
+    VerticalLayout {
+        padding: 10px;
+
+        HorizontalBox {
+            height: 50px;
+            Text {
+                vertical-alignment: TextVerticalAlignment.center;
+                text: "Easy Rooms:";
+            }
+
+            LineEdit {
+                font-size: 14px;
+                placeholder-text: "Selecciona la ruta de la partición o un directorio con los archivos de esta...";
+            }
+
+            Button {
+                colorize-icon: false;
+                enabled: true;
+                icon: @image-url("../icons/folder_open.svg");
+                primary: false;
+                text: "Abrir";
+            }
+        }
+
+        HorizontalLayout {
+            RoomsFileExplorer { }
+
+            VerticalBox {
+                Image {
+                    source: @image-url("../icons/folder_open.svg");
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,75 @@
+import { Button, VerticalBox, StandardListView, StandardTableView, LineEdit, HorizontalBox } from "std-widgets.slint";
+import { CustomTable } from "CustomTable.slint";
+
+export component MainWindow inherits Window {
+    in-out property <int> counter: 42;
+    callback request-increase-value();
+
+    VerticalBox {
+        HorizontalBox {
+            Text {
+                vertical-alignment: TextVerticalAlignment.center;
+                text: "Easy Rooms:";
+            }
+
+            LineEdit {
+                font-size: 14px;
+                placeholder-text: "Selecciona la ruta de la partición o un directorio con los archivos de esta...";
+            }
+
+            Button {
+                colorize-icon: false;
+                enabled: true;
+                icon: @image-url("../icons/folder_open.svg");
+                primary: false;
+                text: "Abrir";
+            }
+        }
+
+        StandardListView {
+            width: 150px;
+            height: 150px;
+            model: [
+                { text: "Blue" },
+                { text: "Red" },
+                { text: "Green" },
+                { text: "Yellow" },
+                { text: "Black" },
+                { text: "White" },
+                { text: "Magenta" },
+                { text: "Cyan" },
+            ];
+        }
+
+        CustomTable {
+            width: 300px;
+            columns: ["Device", "Mount Point", "Total", "Free"];
+            values: [
+                ["/dev/sda1", "/", "255GB", "82.2GB"],
+                ["/dev/sda2", "/tmp", "60.5GB", "44.5GB"],
+                ["/dev/sdb1", "/home", "255GB", "32.2GB"],
+            ];
+        }
+
+        StandardTableView {
+            columns: [
+                { title: "Header 1" },
+                { title: "Header 2" },
+            ];
+            rows: [
+                [
+                    { text: "Item 1" },
+                    { text: "Item 2" },
+                ],
+                [
+                    { text: "Item 1" },
+                    { text: "Item 2" },
+                ],
+                [
+                    { text: "Item 1" },
+                    { text: "Item 2" },
+                ]
+            ];
+        }
+    }
+}
