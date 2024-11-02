@@ -8,6 +8,8 @@ export component MainView {
     preferred-height: 100%;
     preferred-width: 100%;
 
+    in property <string> main_dir;
+
     VerticalLayout {
         padding: 10px;
 
@@ -21,6 +23,7 @@ export component MainView {
             LineEdit {
                 font-size: 14px;
                 placeholder-text: "Selecciona la ruta de la partición o un directorio con los archivos de esta...";
+                text: main_dir;
             }
 
             Button {

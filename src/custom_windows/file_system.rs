@@ -1,24 +1,24 @@
-use std::ffi::OsString;
-use std::os::windows::ffi::{OsStringExt};
-use std::path::{PathBuf};
-use windows::core::Error;
-use windows::Win32::Foundation::MAX_PATH;
-use windows::Win32::Storage::FileSystem;
-use windows::Win32::Storage::FileSystem::{GetVolumeInformationW};
 use crate::custom_windows::enums::DriveTypes;
 use crate::custom_windows::utils;
 use crate::custom_windows::utils::pcwstr;
+use std::ffi::OsString;
+use std::os::windows::ffi::OsStringExt;
+use std::path::{Path, PathBuf};
+use windows::core::Error;
+use windows::Win32::Foundation::MAX_PATH;
+use windows::Win32::Storage::FileSystem;
+use windows::Win32::Storage::FileSystem::GetVolumeInformationW;
 
 pub fn get_logical_devices() -> Vec<PathBuf> {
-    let result_string = &mut [0; 130];
+    let letters = &mut [0; 130];
     unsafe {
-        let result_length = FileSystem::GetLogicalDriveStringsW(Option::from(result_string.as_mut()));
-        if result_length > result_string.len() as u32 {
+        let result_length = FileSystem::GetLogicalDriveStringsW(Option::from(letters.as_mut()));
+        if result_length > letters.len() as u32 {
             panic!("Error getting logical devices: {}", result_length);
         }
     };
 
-    result_string
+    letters
         .split(|c| *c == 0x00)
         .filter(|s| !s.is_empty())
         .map(|c| PathBuf::from(OsString::from_wide(c)))
@@ -33,26 +33,31 @@ pub fn get_removable_devices() -> Vec<PathBuf> {
 }
 
 pub struct LogicalDevice {
-    path: PathBuf,
+    pub(crate) path: PathBuf,
 }
 
-impl From<PathBuf> for LogicalDevice {
-    fn from(path: PathBuf) -> Self {
-        Self { path }
+impl From<&Path> for LogicalDevice {
+    fn from(path: &Path) -> Self {
+        Self { path: path.to_path_buf() }
     }
 }
 
 impl LogicalDevice {
+    /*
     pub fn get_volume_name(&self) -> OsString {
         let identifier = &mut [0u16; 100];
 
         unsafe {
-            FileSystem::GetVolumeNameForVolumeMountPointW(pcwstr::from_path(self.path.as_path()), identifier.as_mut())
+            FileSystem::GetVolumeNameForVolumeMountPointW(
+                pcwstr::from_path(self.path.as_path()),
+                identifier.as_mut(),
+            )
                 .expect("Error getting logical device identifier");
         }
 
         OsString::from_wide(utils::trim_wide_null(identifier))
     }
+    */
 
     /*
     pub fn get_device_name(&self) -> WideString {

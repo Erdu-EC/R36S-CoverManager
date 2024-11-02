@@ -1,26 +1,32 @@
 mod custom_windows;
 
-use custom_windows::file_system;
+use slint::SharedString;
 use crate::custom_windows::file_system::LogicalDevice;
+use custom_windows::file_system;
 
 slint::include_modules!();
 
 fn main() -> Result<(), slint::PlatformError> {
-    let removable_drives = file_system::get_removable_devices();
-    let easy_roms_devices = removable_drives.into_iter()
-        .map(|dp| LogicalDevice::from(dp))
+    let easy_roms_device = file_system::get_removable_devices()
+        .iter()
+        .map(|dp| LogicalDevice::from(dp.as_path()))
         .filter(|d| d.get_label().unwrap().eq("EASYROMS"))
         .collect::<Vec<LogicalDevice>>();
-
-    for device in easy_roms_devices {
-        println!("{:?} {:?}", device.get_volume_name(), device.get_label())
-    }
+    let easy_roms_device = easy_roms_device.first();
 
     let ui = App::new()?; //MainWindow::new()?;
+
+    match easy_roms_device {
+        Some(device) => {
+            ui.set_main_dir(SharedString::from(device.path.to_str().unwrap()));
+        }
+        None => {}
+    }
+
     ui.run()?;
 
     Ok(())
-    
+
     //let app_weak = ui.as_weak();
 
     /*
@@ -35,5 +41,4 @@ fn main() -> Result<(), slint::PlatformError> {
     */
 
     //thread.join().unwrap();
-    
 }

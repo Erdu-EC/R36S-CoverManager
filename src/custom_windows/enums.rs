@@ -1,3 +1,3 @@
 pub enum DriveTypes {
-    DriveRemovable = 2
+    DriveRemovable = 2,
 }

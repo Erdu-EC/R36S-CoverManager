@@ -1,5 +1,4 @@
 pub mod pcwstr;
-pub mod wide_string;
 
 pub fn trim_wide_null(value: &[u16]) -> &[u16] {
     let index = value.iter().position(|&c| c == 0);
