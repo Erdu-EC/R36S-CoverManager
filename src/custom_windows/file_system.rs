@@ -28,7 +28,7 @@ pub fn get_logical_devices() -> Vec<PathBuf> {
 pub fn get_removable_devices() -> Vec<PathBuf> {
     let drives = get_logical_devices();
     drives.into_iter()
-        .filter(|d| unsafe { FileSystem::GetDriveTypeW(pcwstr::from_path_buf(d.to_path_buf())) } == DriveTypes::DriveRemovable as u32)
+        .filter(|d| unsafe { FileSystem::GetDriveTypeW(pcwstr::from_path(d)) } == DriveTypes::DriveRemovable as u32)
         .collect::<Vec<_>>()
 }
 
