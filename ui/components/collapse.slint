@@ -1,0 +1,59 @@
+
+import { VerticalBox, HorizontalBox} from "std-widgets.slint";
+import { SIcon } from "../modules/surrealism-ui/index.slint";
+import { UseIcons } from "../modules/surrealism-ui/use/src/icon.slint";
+
+export component Collapse {
+    in property <string> title;
+    in property <image> icon;
+    in property <length> header-height;
+
+    in-out property <bool> expanded;
+
+    VerticalBox {
+        width: 100%;
+
+        Rectangle {
+            width: 100%;
+            height: header-height;
+
+            TouchArea {
+                height: 100%;
+                width: 100%;
+                mouse-cursor: MouseCursor.pointer;
+
+                SIcon {
+                    x: 0;
+                    source: icon;
+                    height: 64px;
+                    width: 64px;
+                }
+
+                Text {
+                    x: 68px;
+                    text: title;
+                    vertical-alignment: TextVerticalAlignment.center;
+                    horizontal-alignment: TextHorizontalAlignment.left;
+                }
+
+                SIcon {
+                    x: parent.width - 44px;
+                    source: UseIcons.icons.Down;
+                    height: 24px;
+                    width: 24px;
+                }
+
+                clicked => {
+                    expanded = !expanded;
+                }
+            }
+
+            VerticalBox {
+                visible: expanded;
+                width: 100%;
+
+
+            }
+        }
+    }
+}

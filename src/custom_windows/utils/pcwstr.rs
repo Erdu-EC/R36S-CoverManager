@@ -1,4 +1,4 @@
-use std::path::{Path, PathBuf};
+use std::path::{Path};
 use windows::core::{HSTRING, PCWSTR};
 
 pub fn from_path(path: &Path) -> PCWSTR {
